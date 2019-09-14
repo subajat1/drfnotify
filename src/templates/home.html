@@ -1,54 +1,18 @@
 {% load static %}
+{% load webpush_notifications %}
 
-{% comment %} {% load webpush_notifications %} {% endcomment %}
-
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="vapid-key" content="{{ vapid_key }}">
-    {% if user.id %}
-        <meta name="user_id" content="{{ user.id }}">
-    {% endif %}
-    <title>Web Push</title> 
-    
-    <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
-    <link href="{% static '/css/styles.css' %}" rel="stylesheet">
-
-    {% comment %} {% webpush_header %} {% endcomment %}
-    
+    <meta charset='utf-8'>
+    {% webpush_header %}
+    <title>Notif</title>
 </head>
 
-<body>
+{% block body %}
 <div>
-
     {% if user %}
-       {{ user.username }}<br/>
-       {% comment %} {% webpush_button %} {% endcomment %}
+       {{ request.user.username }}<br/>
+       {{ webpush }}<br/>
+       {% webpush_button %}
     {% endif %}
-    <form id="send-push__form">
-    
-        {% csrf_token %}
-    
-        <script src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
-        <script src="{% static '/js/registerSw.js' %}"></script>
-        <script src="{% static '/js/site.js' %}"></script>
-
-        <h3 class="header">Send a push notification</h3>
-        <p class="error"></p>
-        <input type="text" name="head" placeholder="">
-        <textarea name="body" id="" cols="30" rows="10" placeholder=""></textarea>
-        <button>Send Me</button>
-
-        <button id="subscribe" type="button" name="subscribe" onclick="registerSw();">Subscribe</button>
-    </form>
-
-    
-
-    
-
 </div>
-</body>
-</html>
+{% endblock %}

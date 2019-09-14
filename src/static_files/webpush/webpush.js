@@ -19,7 +19,6 @@ window.addEventListener('load', function() {
       // Do everything if the Browser Supports Service Worker
       if ('serviceWorker' in navigator) { 
         var serviceWorker = document.querySelector('meta[name="service-worker-js"]').content;
-        console.log('serviceWorker');
         navigator.serviceWorker.register(serviceWorker)
           .then(
             function(reg) {
