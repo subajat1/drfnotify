@@ -18,4 +18,4 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = models.Message
-        fields = ('content', 'head_payload', 'body_payload', 'url_payload')
+        fields = ('content', 'head_data', 'body_data', 'url_data')

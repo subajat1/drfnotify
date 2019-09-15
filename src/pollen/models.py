@@ -32,10 +32,23 @@ class Message(models.Model):
     body_payload = models.CharField(max_length=256, blank=True, default='')
     url_payload = models.CharField(max_length=256, blank=True, default='')
 
-    def __str__(self):
-        return self.id
-
     class Meta:
         ordering = ['-created']
         verbose_name = 'Message'
         verbose_name_plural = 'Messages'
+    
+    def __str__(self):
+        return self.id
+
+    def save(self, *args, **kw):
+        old = type(self).objects.get(pk=self.pk) if self.pk else None
+
+        if old is None:
+
+            _head = None
+            if ',' in self.head_data:
+                _head = self.head_data.split(',')[0]
+            
+            self.head_payload = self.content.head + _head
+
+        super(Message, self).save(*args, **kw)
