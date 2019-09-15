@@ -17,6 +17,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webpush',
     'corsheaders',
+    'rest_framework',
+    'pollen',
 ]
 
 MIDDLEWARE = [
@@ -32,9 +34,15 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
-    'localhost:8000',
-    '127.0.0.1:8000',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 ROOT_URLCONF = 'djangowebpush.urls'
 
@@ -85,10 +93,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 WEBPUSH_SETTINGS = {
    "VAPID_PUBLIC_KEY": "BPL7eVVBvEdm9O8aK-TEY-EbKulf9SA1eDb3iE4Ff0UgbLADWOqtF7P9LsL3Hp5deTEgz0aUVUk8PM4r2syJ1oE",
