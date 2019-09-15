@@ -10,13 +10,27 @@ import json
 
 @require_GET
 def home(request):
+    webpush_settings = getattr(settings, 'WEBPUSH_SETTINGS', {})
+    vapid_key = webpush_settings.get('VAPID_PUBLIC_KEY')
+
+    context = {
+        'vapid_key': vapid_key,
+        'user': request.user,
+    }
+    return render(request, 'home.html', context)
+
+
+@require_GET
+def subscribe(request):
     try:
         group_name = request.user.groups.all()[0]
     except IndexError:
-	    group_name = 'none'
+        group_name = 'none'
 
-    context = {'webpush': {'group': group_name} }
-    return render(request, 'home.html', context)
+    context = { 'webpush': {'group': group_name}, }
+
+    return render(request, 'subscribe.html', context)
+
 
 @require_POST
 @csrf_exempt

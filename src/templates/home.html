@@ -1,16 +1,36 @@
 {% load static %}
-{% load webpush_notifications %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="vapid-key" content="{{ vapid_key }}">
 
-<meta charset='utf-8'>
-{% webpush_header %}
-<title>Notif</title>
-
-{% block body %}
-<div>
-    {% if user %}
-       {{ request.user.username }}<br/>
-       {{ webpush }}<br/>
-       {% webpush_button %}
+    {% if user.id %}
+      <meta name="user_id" content="{{ user.id }}">
     {% endif %}
-</div>
-{% endblock %}
+
+    <title>DRF Notification</title>
+  </head>
+
+  <body>
+    <div>
+    <form id="send-push__form">
+      <h3 class="header">Send a push notification</h3>
+      <p class="error"></p>
+      <input type="text" name="head" placeholder="Header: Your favorite airline 😍">
+      <textarea name="body" id="" cols="30" rows="10" placeholder="Body: Your flight has been cancelled 😱😱😱"></textarea>
+      <button>Send Me</button>
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="{% static '/js/site.js' %}"></script>
+
+      {% if user %}                                                                                                          </form>
+        {{ user }}<br/>
+        {{ vapid_key }}<br/>
+      {% endif %}
+
+    </form>
+    </div>
+  </body>
+</html>
