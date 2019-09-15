@@ -17,11 +17,11 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = (
         'created',
         'content',
-        'head_payload',
-        'body_payload',
-        'url_payload',
+        'head_data',
+        'body_data',
+        'url_data',
     )
-    search_fields = ('head_payload', 'body_payload', 'url_payload')
+    search_fields = ('head_data', 'body_data', 'url_data')
 
 admin.site.register(models.Message, MessageAdmin)
 

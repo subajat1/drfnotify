@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 
 from rest_framework import permissions, renderers, viewsets, filters
+from rest_framework.authentication import TokenAuthentication
 
 from . import models, serializers
 
@@ -15,6 +16,8 @@ class ContentViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ContentSerializer
 
 
-class MessageViewSet(viewsets.ReadOnlyModelViewSet):
+class MessageViewSet(viewsets.ModelViewSet):
     queryset = models.Message.objects.all()
     serializer_class = serializers.MessageSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)

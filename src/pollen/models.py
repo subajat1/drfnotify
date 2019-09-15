@@ -1,6 +1,7 @@
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.db import models
 
+from webpush import send_user_notification
 
 class Content(models.Model):
     id = models.AutoField(primary_key=True)
@@ -28,9 +29,6 @@ class Message(models.Model):
     head_data = models.CharField(max_length=64, blank=True, default='')
     body_data = models.CharField(max_length=256, blank=True, default='')
     url_data = models.CharField(max_length=256, blank=True, default='')
-    head_payload = models.CharField(max_length=64, blank=True, default='')
-    body_payload = models.CharField(max_length=256, blank=True, default='')
-    url_payload = models.CharField(max_length=256, blank=True, default='')
 
     class Meta:
         ordering = ['-created']
@@ -38,17 +36,24 @@ class Message(models.Model):
         verbose_name_plural = 'Messages'
     
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     def save(self, *args, **kw):
         old = type(self).objects.get(pk=self.pk) if self.pk else None
-
-        if old is None:
-
-            _head = None
-            if ',' in self.head_data:
-                _head = self.head_data.split(',')[0]
-            
-            self.head_payload = self.content.head + _head
-
         super(Message, self).save(*args, **kw)
+
+        if old is None and self.content is not None:
+            receivers = User.objects.filter(groups=self.content.receiver)
+            if len(receivers) > 0:
+
+                payload = {
+                    'head': self.content.head + self.head_data,
+                    'body': self.content.body + self.body_data,
+                    'icon': self.content.icon,
+                    'sound': self.content.sound,
+                    'url': self.content.url + self.url_data
+                }
+
+                for receiver in receivers:
+                    send_user_notification(user=receiver, payload=payload, ttl=1000)
+        
