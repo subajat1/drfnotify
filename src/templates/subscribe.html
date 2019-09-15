@@ -1,10 +1,12 @@
 {% load webpush_notifications %}
 <html>
   <head>
-    {% webpush_header %}
+    {% if user.is_authenticated %}
+      {% webpush_header %}
+    {% endif %}
   </head>
   <body>
-    {% if request.user %}
+    {% if user.is_authenticated %}
       username: {{ request.user.username }}<br/>
       group: {{ webpush.group }}<br/>
       {% if webpush.group and webpush.group != 'none' %}
@@ -12,6 +14,8 @@
       {% else %}
         Please contact admin to assign a group to {{ request.user.username }}
       {% endif %}
+    {% else %}
+      Please login to get access
     {% endif %}
   </body>
 </html>
