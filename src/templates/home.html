@@ -16,21 +16,22 @@
 
   <body>
     <div>
-    <form id="send-push__form">
-      <h3 class="header">Send a push notification</h3>
-      <p class="error"></p>
-      <input type="text" name="head" placeholder="Header: Your favorite airline 😍">
-      <textarea name="body" id="" cols="30" rows="10" placeholder="Body: Your flight has been cancelled 😱😱😱"></textarea>
-      <button>Send Me</button>
-      <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-      <script src="{% static '/js/site.js' %}"></script>
+      {% if user.is_authenticated %}
+        <form id="send-push__form">
+          <h3 class="header">Send a push notification</h3>
+          <p class="error"></p>
+          <input type="text" name="head" placeholder="Header: Your favorite airline 😍"><br/>
+          <textarea name="body" id="" cols="30" rows="10" placeholder="Body: Your flight has been cancelled 😱😱😱"></textarea><br/>
+          <button>Send Me</button>
+          <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+          <script src="{% static '/js/site.js' %}"></script>
 
-      {% if user %}                                                                                                          </form>
-        {{ user }}<br/>
-        {{ vapid_key }}<br/>
+          {% if user %}
+            {{ user }}<br/>
+          {% endif %}
+
+        </form>
       {% endif %}
-
-    </form>
     </div>
   </body>
 </html>
