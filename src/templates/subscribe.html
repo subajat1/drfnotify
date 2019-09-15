@@ -4,6 +4,13 @@
     {% webpush_header %}
   </head>
   <body>
-    {% webpush_button %}
+    {% if request.user %}
+      username: {{ request.user.username }}<br/>
+      group: {{ webpush.group }}<br/>
+      {% if webpush.group and webpush.group != 'none' %}
+        {% webpush_button %}
+      {% else %}
+        Please contact admin to assign a group to {{ request.user.username }}
+      {% endif %}
   </body>
 </html>
