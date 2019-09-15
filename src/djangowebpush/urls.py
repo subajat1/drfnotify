@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from .views import home, send_push, subscribe
 
 urlpatterns = [
+    path('api/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
     path('', home),
     path('subscribe/', subscribe),
